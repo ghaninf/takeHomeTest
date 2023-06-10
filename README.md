@@ -1,2 +1,0 @@
-# takeHomeTest
-THT - Nutech
