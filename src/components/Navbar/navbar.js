@@ -4,7 +4,7 @@ import PopupAuth from "../Popup/popupAuth";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Navbar({ page, user }) {
+export default function Navbar(props) {
   const navigate = useNavigate();
   const [popup, setPopup] = useState(null)
   
@@ -22,12 +22,12 @@ export default function Navbar({ page, user }) {
   }
 
   return(
-    <nav className="fixed top-0 left-0 right-0 w-full bg-white py-3 px-28 flex flex-row flex-nowrap justify-between border-b drop-shadow">
+    <nav className="fixed top-0 left-0 right-0 w-full bg-white py-3 px-28 flex flex-row flex-nowrap justify-between border-b drop-shadow z-50">
       <ul className="w-3/4 flex flex-row flex-nowrap gap-8 items-center text-zinc-500 [&>*]: ">
-        <li onClick={() => navigate(menu.products.link)} className={`border-b border-transparent cursor-pointer ${menu.products.page === page ? 'text-zinc-800 border-green-500' : ''} hover:text-zinc-800 hover:border-green-500`}>{menu.products.title}</li>
+        <li onClick={() => navigate(menu.products.link)} className={`border-b cursor-pointer ${menu.products.page === props.page ? 'text-zinc-800 border-green-500' : 'border-transparent'} hover:text-zinc-800 hover:border-green-500`}>{menu.products.title}</li>
         {
-          user && 
-          <li onClick={() => navigate(menu.manage.link)} className={`border-b border-transparent cursor-pointer ${menu.manage.page === page ? 'text-zinc-800 border-green-500' : ''} hover:text-zinc-800 hover:border-green-500`}>{menu.manage.title}</li>
+          props?.user && 
+          <li onClick={() => navigate(menu.manage.link)} className={`border-b cursor-pointer ${menu.manage.page === props.page ? 'text-zinc-800 border-green-500' : 'border-transparent'} hover:text-zinc-800 hover:border-green-500`}>{menu.manage.title}</li>
         }
       </ul>
       <Button

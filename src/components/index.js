@@ -16,6 +16,9 @@ export * from './Input/input';
 export { default as Navbar } from './Navbar/navbar';
 export * from './Navbar/navbar';
 
+export { default as Pagination } from './Pagination/pagination';
+export * from './Pagination/pagination';
+
 export { default as PopupAuth } from './Popup/popupAuth';
 export * from './Popup/popupAuth';
 
