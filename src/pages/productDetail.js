@@ -1,46 +1,57 @@
 import { useContext, useEffect, useState } from "react"
+import {  useNavigate } from "react-router-dom";
+
 import { UserContext } from "../layout"
 import { ProductService } from "../services"
 import { Breadcrumbs, Button, PopupConfirmation } from "../components"
+import { generateCurrency } from "../utils";
 
 import IconDelete from '../assets/icon-delete-white.svg';
 import IconEdit from '../assets/icon-pen-edit-white.svg';
-import { useLocation, useNavigate } from "react-router-dom";
 
 const ProductDetails = () => {
-  const { user, pageURL } = useContext(UserContext)
+  const { user, pageURL } = useContext(UserContext);
   const navigate = useNavigate();
-  const [state, setState] = useState({
-    _id: '1', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul6-lfyy7f3x9bzx8b', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5
-  })
-  const [popup, setPopup] = useState(null)
+  const [state, setState] = useState();
+  const [popup, setPopup] = useState(null);
 
   useEffect(() => {
-    // ProductService.getDetail(pageURL[2])
-    //   .then(res => {
-    //     setState(res)
-    //   })
-    //   .catch(error => {
-    //     console.log(error.message)
-    //   })
+    ProductService.getDetail(pageURL[3])
+      .then(res => {
+        setState(res);
+      })
+      .catch(error => {
+        console.log(error.message);
+      })
   }, [])
 
-  const handleDelete = () => {
-    setPopup(<PopupConfirmation />)
+  const handleDelete = (id) => {
+    ProductService.delete(id)
+      .then(() => {
+        navigate('/manage');
+      })
+      .catch(error => {
+        console.log(error.message);
+      })
+  }
+
+  const openPopup = () => {
+    setPopup(<PopupConfirmation confirm={() => handleDelete(pageURL[3])} cancel={() => setPopup(null)} />);
   }
 
   const handleEdit = () => {
-    navigate(`/manage/${pageURL[2]}/update`)
+    navigate(`/manage/update/${pageURL[3]}`);
   }
 
   return(
     <div className="relative z-0">
+      {popup}
       <div className="flex flex-row justify-between items-center">
         <Breadcrumbs title={state?.name} />
         {
           user && pageURL[1] === 'manage' ?
             <div className="flex flex-row gap-4">
-              <Button text="Delete Product" icon={IconDelete} positionIcon={'left'} onClick={handleDelete} typeColor={'secondary'} />
+              <Button text="Delete Product" icon={IconDelete} positionIcon={'left'} onClick={openPopup} typeColor={'secondary'} />
               <Button text="Edit Product" icon={IconEdit} positionIcon={'left'} onClick={handleEdit} typeColor={'primary'} />
             </div>
           : ''
@@ -56,13 +67,12 @@ const ProductDetails = () => {
             <h4 className="row-start-1 col-start-1">Name</h4>
             <h4 className="row-start-1 col-start-2 col-end-8"> : {state?.name}</h4>
             <h4 className="row-start-2 col-start-1">Price</h4>
-            <h4 className="row-start-2 col-start-2 col-end-8"> : {state?.price}</h4>
+            <h4 className="row-start-2 col-start-2 col-end-8"> : Rp {generateCurrency(state?.sell)}</h4>
             <h4 className="row-start-3 col-start-1">Stock</h4>
             <h4 className="row-start-3 col-start-2 col-end-8"> : {state?.stock}</h4>
           </div>
         </div>
       </div>
-      {popup}
     </div>
   )
 }

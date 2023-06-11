@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { UserContext } from "../layout"
-import { Button, CardProduct, Pagination } from "../components"
+import { Button, CardProduct, Pagination, PopupConfirmation } from "../components"
 
 import { ProductService } from "../services"
 
@@ -17,35 +17,24 @@ const Products = () => {
     total: 14
   })
   const [products, setProducts] = useState([])
+  const [popup, setPopup] = useState(null)
   
+  const getData = (page, limit) => {
+    ProductService.getList({ page: page, limit: limit })
+      .then(res => {
+        setProducts(res.data)
+        setPage(prev => ({
+          ...prev,
+          total: res.page.total
+        }))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   useEffect(() => {
-    setProducts([
-      { _id: '1', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul6-lfyy7f3x9bzx8b', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '2', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul6-lfyy7f3x9bzx8b', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '3', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul6-lfyy7f3x9bzx8b', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '4', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul6-lfyy7f3x9bzx8b', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '5', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul5-lfyy7f3xaqkd95', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '6', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul5-lfyy7f3xaqkd95', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '7', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul5-lfyy7f3xaqkd95', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '8', imageURL: 'https://images.tokopedia.net/img/cache/700/product-1/2017/7/7/3453155/3453155_2fd813d6-d997-4c21-bd0f-df19d5e6fe5c_1000_1074.jpg.webp?ect=4g', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '9', imageURL: 'https://images.tokopedia.net/img/cache/700/product-1/2017/7/7/3453155/3453155_2fd813d6-d997-4c21-bd0f-df19d5e6fe5c_1000_1074.jpg.webp?ect=4g', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '10', imageURL: 'https://images.tokopedia.net/img/cache/700/product-1/2017/7/7/3453155/3453155_2fd813d6-d997-4c21-bd0f-df19d5e6fe5c_1000_1074.jpg.webp?ect=4g', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '11', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul6-lfyy7f3x9bzx8b', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '12', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul6-lfyy7f3x9bzx8b', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '13', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul6-lfyy7f3x9bzx8b', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-      { _id: '14', imageURL: 'https://down-id.img.susercontent.com/file/id-11134207-7qul6-lfyy7f3x9bzx8b', name: 'Kemeja laki-laki - Hitam', price: 80000, sell: 120000, stock: 5 },
-    ])
-    // ProductService.getList({ page: page.page, limit: page.limit })
-    //   .then(res => {
-    //     setProducts(res.data)
-    //     setPage(prev => ({
-    //       ...prev,
-    //       total: res.page.total
-    //     }))
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
+    getData(page.page, page.limit)
   }, [page.page])
 
   const handlePagination = (page) => {
@@ -55,12 +44,22 @@ const Products = () => {
     }))
   }
 
-  const handleEdit = (id) => {
-    navigate(`/manage/${id}/update`)
+  const handleDelete = (id) => {
+    ProductService.delete(id)
+      .then(() => {
+        getData(page.page, page.limit)
+      })
+      .catch(error => {
+        console.log(error.message)
+      })
   }
 
-  const handleDelete = () => {
+  const openPopup = (id) => {
+    setPopup(<PopupConfirmation confirm={() => handleDelete(id)} cancel={() => setPopup(null)} />)
+  }
 
+  const handleEdit = (id) => {
+    navigate(`/manage/update/${id}`)
   }
 
   const navigateTo = (id) => {
@@ -73,6 +72,7 @@ const Products = () => {
 
   return(
     <div className="relative z-0">
+      {popup}
       <div className="flex flex-row justify-between items-center">
         <h1>Products</h1>
         {
@@ -83,7 +83,7 @@ const Products = () => {
       <div className={`relative mt-12 grid grid-cols-5 gap-x-8 gap-y-6`}>
         {
           products.slice(page.page * page.limit, (page.page + 1) * page.limit).map((product, key) => (
-            <CardProduct key={key} item={product} isAdmin={user && pageURL[1] === 'manage'} open={navigateTo} edit={handleEdit} delete={handleDelete} />
+            <CardProduct key={key} item={product} isAdmin={user && pageURL[1] === 'manage'} open={navigateTo} edit={handleEdit} delete={openPopup} />
           ))
         }
       </div>
