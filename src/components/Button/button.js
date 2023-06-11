@@ -23,8 +23,8 @@ export default function Button(props) {
       onClick={props?.onClick || undefined}
       className={`relative w-fit min-w-[80px] px-4 py-1.5 flex flex-nowrap gap-x-1 box-border rounded cursor-pointer border border-transparent
         ${positionIcon[props?.positionIcon] || ''} ${typeColor[props?.typeColor] || ''}`}>
-      {props?.icon || null}
-      {props?.text || null}
+      { props?.icon ? <img src={props.icon} alt='ico' className='w-[24px] h-[24px]' /> : '' }
+      { props?.text || null }
     </button>
   )
 }

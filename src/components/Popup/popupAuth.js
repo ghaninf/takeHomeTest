@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { AuthService } from "../../services"
-import Button from "../Button/button";
 import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
+
+import Button from "../Button/button";
 import Input from "../Input/input";
+
+import { AuthService } from "../../services"
 
 PopupAuth.propTypes = {
   close: PropTypes.func.isRequired
@@ -48,8 +50,21 @@ export default function PopupAuth(props) {
       })
   }
 
+  const handleLogout = () => {
+    AuthService.logout()
+      .then(() => {
+        navigate('/')
+      })
+      .catch(error => {
+        setState(prev => ({
+          ...prev,
+          error: error.message
+        }))
+      })
+  }
+
   return(
-    <div className="absolute top-[72px] right-2 w-72 p-6 bg-white border rounded drop-shadow">
+    <div className="absolute top-[72px] right-2 w-72 p-6 bg-white border rounded drop-shadow z-10">
       {
         !account ?
           <div className="relative flex flex-col justify-center items-center gap-4">
@@ -85,7 +100,16 @@ export default function PopupAuth(props) {
               />
             </div>
           </div>
-        : <title></title>
+        : <div className="relative flex flex-col justify-center items-center gap-4">
+            <h3 className="text-zinc-500">Log Out ?</h3>
+            <div className="relative flex flex-row flex-nowrap gap-8 justify-center items-center">
+              <Button
+                text={'Logout'}
+                typeColor={'secondary'}
+                onClick={handleLogout}
+              />
+            </div>
+          </div>
       }
     </div>
   )
