@@ -20,7 +20,7 @@ export default function Input(props) {
         placeholder={props.placeholder}
         value={props.value}
         onChange={props.onChange}
-        className="w-full px-4 py-3 rounded box-border border border-zinc-300 outline-3 outline-zinc-400"
+        className={`w-full px-4 py-3 rounded box-border border border-zinc-300 outline-3 outline-zinc-400 ${props?.additionalCSS || ''}`}
       />
       <span className='text-red-500'>{props?.error}</span>
     </div>
