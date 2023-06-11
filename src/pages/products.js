@@ -64,11 +64,11 @@ const Products = () => {
   }
 
   const navigateTo = (id) => {
-    navigate(`/${user && pageURL[1] === 'manage' ? 'manage' : 'product'}/${id}`)
+    navigate(`/${user && pageURL[1] === 'manage' ? 'manage' : 'products'}/${id}`)
   }
 
   const handleAdd = () => {
-    navigate('/product/create')
+    navigate('/manage/create')
   }
 
   return(

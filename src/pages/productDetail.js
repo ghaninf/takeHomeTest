@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../layout"
 import { ProductService } from "../services"
-import { Button, PopupConfirmation } from "../components"
+import { Breadcrumbs, Button, PopupConfirmation } from "../components"
 
 import IconDelete from '../assets/icon-delete-white.svg';
 import IconEdit from '../assets/icon-pen-edit-white.svg';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProductDetails = () => {
   const { user, pageURL } = useContext(UserContext)
@@ -36,7 +36,7 @@ const ProductDetails = () => {
   return(
     <div className="relative z-0">
       <div className="flex flex-row justify-between items-center">
-        <h1>{state?.name}</h1>
+        <Breadcrumbs title={state?.name} />
         {
           user && pageURL[1] === 'manage' ?
             <div className="flex flex-row gap-4">
