@@ -12,7 +12,7 @@ export default function PopupConfirmation({ confirm, cancel }) {
           onClick={cancel}
         />
         <Button
-          text={'Login'}
+          text={'Confirm'}
           typeColor={'primary'}
           onClick={confirm}
         />
