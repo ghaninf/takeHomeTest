@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 Button.propTypes = {
-  icon: PropTypes.object,
+  icon: PropTypes.string,
   positionIcon: PropTypes.oneOf(['left', 'right']),
   text: PropTypes.string.isRequired,
   typeColor: PropTypes.oneOf(['primary', 'secondary', 'tertiary']),
@@ -23,7 +23,7 @@ export default function Button(props) {
       onClick={props?.onClick || undefined}
       className={`relative w-fit min-w-[80px] px-4 py-1.5 flex flex-nowrap gap-x-1 box-border rounded cursor-pointer border border-transparent
         ${positionIcon[props?.positionIcon] || ''} ${typeColor[props?.typeColor] || ''}`}>
-      { props?.icon ? <img src={props.icon} alt='ico' className='w-[24px] h-[24px]' /> : '' }
+      { props?.icon ? <img src={props?.icon} alt='ico' className='w-[24px] h-[24px]' /> : '' }
       { props?.text || null }
     </button>
   )

@@ -64,11 +64,11 @@ const Products = () => {
   }
 
   const navigateTo = (id) => {
-    navigate(`/product/${id}`)
+    navigate(`/${user && pageURL[1] === 'manage' ? 'manage' : 'products'}/${id}`)
   }
 
   const handleAdd = () => {
-    navigate('/product/create')
+    navigate('/manage/create')
   }
 
   return(
@@ -80,7 +80,7 @@ const Products = () => {
             <Button text="Add Product" icon={IconAdd} positionIcon={'left'} onClick={handleAdd} typeColor={'primary'} /> : ''
         }
       </div>
-      <div className={`relative mt-12 grid grid-cols-${page.limit / 2} gap-x-8 gap-y-6`}>
+      <div className={`relative mt-12 grid grid-cols-5 gap-x-8 gap-y-6`}>
         {
           products.slice(page.page * page.limit, (page.page + 1) * page.limit).map((product, key) => (
             <CardProduct key={key} item={product} isAdmin={user && pageURL[1] === 'manage'} open={navigateTo} edit={handleEdit} delete={handleDelete} />

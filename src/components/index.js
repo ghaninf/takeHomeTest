@@ -1,6 +1,9 @@
 export { default as Button } from './Button/button';
 export * from './Button/button';
 
+export { default as Breadcrumbs } from './Breadcrumbs/breadcrumbs';
+export * from './Breadcrumbs/breadcrumbs';
+
 export { default as CardProduct } from './Card/cardProduct';
 export * from './Card/cardProduct';
 

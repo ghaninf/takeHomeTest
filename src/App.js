@@ -30,9 +30,10 @@ function App() {
         children: [
           { path: '', element: <Navigate to={'products'} /> },
           { path: 'products', element: <Products /> },
-          { path: 'product/:id', element: <ProductDetail /> },
+          { path: 'products/:id', element: <ProductDetail /> },
           { path: 'manage', element: <Products /> },
           { path: 'manage/create', element: <FormProduct /> },
+          { path: 'manage/:id', element: <ProductDetail /> },
           { path: 'manage/:id/update', element: <FormProduct /> },
         ]
       },
