@@ -26,10 +26,26 @@ class ProductService {
   }
 
   async create(data) {
-    console.log(data)
     return axios
       .post(
         `${process.env.REACT_APP_API_URL}/product/create`,
+        data,
+        {
+          headers: authHeader(),
+        }
+      )
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        throw error
+      })
+  }
+
+  async update(id, data) {
+    return axios
+      .put(
+        `${process.env.REACT_APP_API_URL}/product/update/${id}`,
         data,
         {
           headers: authHeader(),

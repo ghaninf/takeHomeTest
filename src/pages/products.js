@@ -34,7 +34,7 @@ const Products = () => {
         }))
       })
       .catch(error => {
-        console.log(error)
+        alert(error.message)
       })
   }
 
@@ -55,7 +55,7 @@ const Products = () => {
         getData(page.page, page.limit)
       })
       .catch(error => {
-        console.log(error.message)
+        alert(error.message)
       })
   }
 
