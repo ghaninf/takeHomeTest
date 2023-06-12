@@ -8,17 +8,28 @@ import { generateCurrency } from "../utils";
 
 import IconDelete from '../assets/icon-delete-white.svg';
 import IconEdit from '../assets/icon-pen-edit-white.svg';
+import { convertBase64ToImageSrc } from "../libs";
 
 const ProductDetails = () => {
   const { user, pageURL } = useContext(UserContext);
   const navigate = useNavigate();
-  const [state, setState] = useState();
+  const [state, setState] = useState({
+    _id: '',
+    name: '',
+    price: 0,
+    sell: 0,
+    stock: 0
+  });
   const [popup, setPopup] = useState(null);
 
   useEffect(() => {
-    ProductService.getDetail(pageURL[3])
+    ProductService.getDetail(pageURL[2])
       .then(res => {
-        setState(res);
+        console.log(res)
+        setState({
+          ...res,
+          imageURL: convertBase64ToImageSrc(res.base64)
+        });
       })
       .catch(error => {
         console.log(error.message);
@@ -57,9 +68,9 @@ const ProductDetails = () => {
           : ''
         }
       </div>
-      <div className={`relative mt-12 flex flex-row flex-nowrap`}>
-        <div className="relative w-96 min-w-[384px] h-full max-h-[384px]">
-          <img src={state?.imageURL} alt="product_image" className="w-full h-auto object-cover" />
+      <div className={'relative mt-8 flex flex-row flex-nowrap gap-x-8'}>
+        <div className="relative w-full max-w-[400px] h-auto max-h-[400px] cursor-pointer border border-zinc-300 rounded overflow-hidden">
+          <img src={state?.imageURL} alt="product_image" className="block w-full h-full object-cover" />
         </div>
         <div>
           <h3>Product Detail</h3>

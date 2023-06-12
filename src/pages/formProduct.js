@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { UserContext } from "../layout"
 import { Button, Input } from "../components";
 import { ProductService } from "../services"
+import { convertBase64ToImageSrc, convertImageToBase64, convertImageToBase64Promise, getBase64StringFromDataURL } from "../libs";
 
 const FormProduct = () => {
   const { pageURL } = useContext(UserContext)
@@ -44,7 +45,7 @@ const FormProduct = () => {
     price: yup.number().required('This field is required').typeError('This field must numerical'),
     sell: yup.number().required('This field is required').typeError('This field must numerical'),
     stock: yup.number().required('This field is required').typeError('This field must numerical'),
-    url: yup.string().required('This field is required').typeError('This field must alphabetical'),
+    base64: yup.string().required('This field is required').typeError('This file must png or jpg'),
   })
 
   useEffect(() => {
@@ -53,7 +54,11 @@ const FormProduct = () => {
         .then(res => {
           setState(prev => ({
             ...prev,
-            input : res
+            input : {
+              ...prev.input,
+              ...res,
+              url: res?.base64 || null
+            }
           }))
         })
         .catch(error => {
@@ -104,7 +109,8 @@ const FormProduct = () => {
       input: {
         ...prev.input,
         file: e.target.files[0],
-        url: URL.createObjectURL(e.target.files[0])
+        url: URL.createObjectURL(e.target.files[0]),
+        base64: ''
       },
       fileIsNew: true,
       errors: errors,
@@ -112,27 +118,43 @@ const FormProduct = () => {
     }));
   }
 
-  const handleValidate = async () => {
-    try {
-      await schema.validate(state.input, { abortEarly: false })
-    } catch (error) {
-      let errors = state.errors;
-      error.inner.forEach(el => {
-        errors[el.path] = el.errors[0];
-      });
-      setState(prev => ({
-        ...prev,
-        errors: errors,
-        disabled: true
-      }))
+  const handleValidate = () => {
+    let input = {
+      ...state.input,
+      price: Number(state.input.price),
+      sell: Number(state.input.sell),
+      stock: Number(state.input.stock),
     }
+    convertImageToBase64Promise(state.input.url)
+      .then(res => {
+        input['base64'] = res
+        schema.validate(input, { abortEarly: false })
+          .then(() => {
+            delete input.file
+            delete input.url
+            handleSubmit(input)
+          })
+          .catch(error => {
+            let errors = state.errors;
+            error.inner.forEach(el => {
+              errors[el.path] = el.errors[0];
+            });
+            setState(prev => ({
+              ...prev,
+              errors: errors,
+              disabled: true
+            }))
+          })
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
-  const handleSubmit = async () => {
-    await handleValidate();
-    const service = state.input?._id
-    ? ProductService.create(state.input)
-    : ProductService.update(state.input.id, state.input)
+  const handleSubmit = (input) => {
+    const service = pageURL[3] !== undefined
+      ? ProductService.update(input._id, input)
+      : ProductService.create(input)
     
     service
       .then(() => {
@@ -141,6 +163,16 @@ const FormProduct = () => {
       .catch(error => {
         console.log(error.message)
       })
+  }
+
+  const renderImage = (url, file) => {
+    if (url) {
+      return <img src={state.input.url} alt="preview" className="block w-full h-full object-cover" />
+    }
+    if (file?.data) {
+      return <span id="base64" style={{ display: 'none'}}>{file.data}</span>
+    }
+    return <div className="h-[400px] text-center flex justify-center items-center">Choose Product's Image <br /> with format .jpg, .jpeg, .png</div>
   }
 
   return(
@@ -152,9 +184,10 @@ const FormProduct = () => {
           <label htmlFor="file" className="relative w-full max-w-[400px] h-auto max-h-[400px] cursor-pointer border border-zinc-300 rounded overflow-hidden">
             {
               state.input?.url
-              ? <img src={state.input.url} alt="preview" className="block w-full h-full object-cover" />
-              : <div className="h-[400px] text-center flex justify-center items-center">Choose Product's Image <br /> with format .jpg, .jpeg, .png</div>
+                ? <img src={state.input.url} alt="preview" className="block w-full h-full object-cover" />
+                : <div className="h-[400px] text-center flex justify-center items-center">Choose Product's Image <br /> with format .jpg, .jpeg, .png</div>
             }
+            {renderImage(state.input.url, state.input?.file)}
             <input
               {...spec.file}
               id={spec.file.name}
@@ -199,9 +232,9 @@ const FormProduct = () => {
           onClick={navigateManage}
         />
         <Button
-          text={'Login'}
+          text={'Create'}
           typeColor={'primary'}
-          onClick={handleSubmit}
+          onClick={handleValidate}
         />
       </div>
     </div>
