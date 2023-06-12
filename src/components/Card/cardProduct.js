@@ -15,7 +15,7 @@ export default function CardProduct(props) {
       }
       <div onClick={() => props.open(props.item._id)} className="relative flex flex-col gap-2 justify-start">
         <div className="relative max-w-[159px] max-h-[159px] min-h-[159px] mb-4 overflow-hidden">
-          <img src={props.item.imageURL} alt="product" className="relative w-full h-full max-h-auto object-cover" />
+          <img src={props.item.url} alt="product" className="relative w-full h-full max-h-auto object-cover" />
         </div>
         <h4>{props.item.name}</h4>
         <h4>Rp {generateCurrency(props.item.sell)}</h4>

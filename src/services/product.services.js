@@ -4,7 +4,7 @@ import authHeader from "./auth-header";
 class ProductService {
   async getList() {
     return axios
-      .get(`${process.env.API}/product/list`)
+      .get(`${process.env.REACT_APP_API_URL}/product/list`)
       .then(response => {
         return response.data;
       })
@@ -14,11 +14,11 @@ class ProductService {
   }
 
   async getDetail(id) {
-    const URL = `${process.env.API}/product/:id`.replace(':id', id)
+    const URL = `${process.env.REACT_APP_API_URL}/product/:id`.replace(':id', id)
     return axios
       .get(URL)
       .then(response => {
-        return response
+        return response.data
       })
       .catch(error => {
         throw error
@@ -26,12 +26,13 @@ class ProductService {
   }
 
   async create(data) {
+    console.log(data)
     return axios
       .post(
-        `${process.env.API}/create`,
+        `${process.env.REACT_APP_API_URL}/product/create`,
+        data,
         {
           headers: authHeader(),
-          data: data
         }
       )
       .then(response => {
@@ -45,10 +46,9 @@ class ProductService {
   async delete(id) {
     return axios
       .delete(
-        `${process.env.API}/product/:id`,
+        `${process.env.REACT_APP_API_URL}/product/delete/${id}`,
         { 
           headers: authHeader(),
-          data: id
         }
       )
       .then(response => {

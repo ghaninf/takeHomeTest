@@ -7,6 +7,7 @@ import { Button, CardProduct, Pagination, PopupConfirmation } from "../component
 import { ProductService } from "../services"
 
 import IconAdd from '../assets/icon-button-plus.svg';
+import { convertBase64ToImageSrc } from "../libs"
 
 const Products = () => {
   const { user, pageURL } = useContext(UserContext)
@@ -14,7 +15,7 @@ const Products = () => {
   const [page, setPage] = useState({
     page: 0,
     limit: 10,
-    total: 14
+    total: 10
   })
   const [products, setProducts] = useState([])
   const [popup, setPopup] = useState(null)
@@ -22,10 +23,14 @@ const Products = () => {
   const getData = (page, limit) => {
     ProductService.getList({ page: page, limit: limit })
       .then(res => {
-        setProducts(res.data)
+        const data = res.data.map(product => ({
+          ...product,
+          url: convertBase64ToImageSrc(product.base64)
+        }))
+        setProducts(data)
         setPage(prev => ({
           ...prev,
-          total: res.page.total
+          total: res?.page?.total || 0
         }))
       })
       .catch(error => {

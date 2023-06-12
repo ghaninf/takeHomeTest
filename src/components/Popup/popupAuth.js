@@ -38,7 +38,7 @@ export default function PopupAuth(props) {
   }
 
   const handleLogin = () => {
-    AuthService.login()
+    AuthService.login(state.input.email, state.input.password)
       .then(() => {
         navigate('/');
       })
@@ -52,15 +52,7 @@ export default function PopupAuth(props) {
 
   const handleLogout = () => {
     AuthService.logout()
-      .then(() => {
-        navigate('/')
-      })
-      .catch(error => {
-        setState(prev => ({
-          ...prev,
-          error: error.message
-        }))
-      })
+    navigate('/')
   }
 
   return(

@@ -2,20 +2,19 @@ import axios from 'axios';
 import authHeader from './auth-header';
 
 class AuthService {
-  async login(email, password, remember) {
+  async login(email, password) {
+    if (!(email && password)) {
+      email = () => 'test@email.com'
+      password = () => 'test@email.com'
+    }
     return axios
-      .post(`${process.env.API}/account/login`, {
+      .post(`${process.env.REACT_APP_API_URL}/account/login`, {
         email,
         password
       })
       .then(response => {
         if (response.data) {
           this.setToLocalStorage('user', response.data);
-          if (remember) {
-            this.setToLocalStorage('email', { 'email': email });
-          } else {
-            this.removeLocalStorage('email');
-          }
         }
         return response.data;
       })
@@ -24,19 +23,8 @@ class AuthService {
       })
   }
   
-  async logout() {
-    return axios
-      .post(`${process.env.API}/account/logout`, {
-        headers: authHeader()
-      })
-      .then(response => {
-        if (response.status >= 200 && response.status < 300) {
-          return this.removeLocalStorage('user')
-        }
-      })
-      .catch(error => {
-        throw error
-      })
+  logout() {
+    this.removeLocalStorage('user')
   }
 
   setToLocalStorage(key, data) {
