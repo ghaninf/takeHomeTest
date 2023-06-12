@@ -45,7 +45,7 @@ const FormProduct = () => {
     price: yup.number().required('This field is required').typeError('This field must numerical'),
     sell: yup.number().required('This field is required').typeError('This field must numerical'),
     stock: yup.number().required('This field is required').typeError('This field must numerical'),
-    base64: yup.string().required('This field is required').typeError('This file must png or jpg'),
+    base64: state.input.file ? yup.string().required('This field is required').typeError('This file must png or jpg') : '',
   })
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const FormProduct = () => {
           }))
         })
         .catch(error => {
-          console.log(error.message)
+          alert(error.message)
         })
     }
   }, [])
@@ -147,7 +147,7 @@ const FormProduct = () => {
           })
       })
       .catch(error => {
-        console.log(error)
+        alert(error.message)
       })
   }
 
@@ -161,7 +161,7 @@ const FormProduct = () => {
         navigateManage()
       })
       .catch(error => {
-        console.log(error.message)
+        alert(error.message)
       })
   }
 
@@ -232,7 +232,7 @@ const FormProduct = () => {
           onClick={navigateManage}
         />
         <Button
-          text={'Create'}
+          text={state.input?._id ? 'Update' : 'Create'}
           typeColor={'primary'}
           onClick={handleValidate}
         />

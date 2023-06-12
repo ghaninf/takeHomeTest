@@ -25,14 +25,13 @@ const ProductDetails = () => {
   useEffect(() => {
     ProductService.getDetail(pageURL[2])
       .then(res => {
-        console.log(res)
         setState({
           ...res,
           imageURL: convertBase64ToImageSrc(res.base64)
         });
       })
       .catch(error => {
-        console.log(error.message);
+        alert(error.message)
       })
   }, [])
 
@@ -42,16 +41,16 @@ const ProductDetails = () => {
         navigate('/manage');
       })
       .catch(error => {
-        console.log(error.message);
+        alert(error.message)
       })
   }
 
   const openPopup = () => {
-    setPopup(<PopupConfirmation confirm={() => handleDelete(pageURL[3])} cancel={() => setPopup(null)} />);
+    setPopup(<PopupConfirmation confirm={() => handleDelete(pageURL[2])} cancel={() => setPopup(null)} />);
   }
 
   const handleEdit = () => {
-    navigate(`/manage/update/${pageURL[3]}`);
+    navigate(`/manage/update/${pageURL[2]}`);
   }
 
   return(
