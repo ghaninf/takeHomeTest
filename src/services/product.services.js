@@ -8,8 +8,7 @@ class ProductService {
     };
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/list`, requestOptions)
       .then(res => {
-        console.log(res)
-        // return res.data
+        return res.data
       })
       .catch(error => {
         throw error
