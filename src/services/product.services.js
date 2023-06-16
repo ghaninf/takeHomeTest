@@ -1,24 +1,31 @@
-import axios from "axios";
 import authHeader from "./auth-header";
 
 class ProductService {
   async getList() {
-    return axios
-      .get(`${process.env.REACT_APP_API_URL}/product/list`)
-      .then(response => {
-        return response.data;
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    };
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/list`, requestOptions)
+      .then(res => {
+        console.log(res)
+        // return res.data
       })
       .catch(error => {
         throw error
       })
   }
 
+  
+
   async getDetail(id) {
-    const URL = `${process.env.REACT_APP_API_URL}/product/:id`.replace(':id', id)
-    return axios
-      .get(URL)
-      .then(response => {
-        return response.data
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    };
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/detail/${id}`, requestOptions)
+      .then(res => {
+        return res.data
       })
       .catch(error => {
         throw error
@@ -26,16 +33,17 @@ class ProductService {
   }
 
   async create(data) {
-    return axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/product/create`,
-        data,
-        {
-          headers: authHeader(),
-        }
-      )
-      .then(response => {
-        return response
+    const requestOptions = {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': authHeader()
+      },
+      body: JSON.stringify(data),
+    };
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/create`, requestOptions)
+      .then(res => {
+        this.setToLocalStorage('user', res)
       })
       .catch(error => {
         throw error
@@ -43,16 +51,17 @@ class ProductService {
   }
 
   async update(id, data) {
-    return axios
-      .put(
-        `${process.env.REACT_APP_API_URL}/product/update/${id}`,
-        data,
-        {
-          headers: authHeader(),
-        }
-      )
-      .then(response => {
-        return response
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': authHeader()
+      },
+      body: JSON.stringify(data),
+    };
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/update/${id}`, requestOptions)
+      .then(res => {
+        return res.data
       })
       .catch(error => {
         throw error
@@ -60,15 +69,17 @@ class ProductService {
   }
 
   async delete(id) {
-    return axios
-      .delete(
-        `${process.env.REACT_APP_API_URL}/product/delete/${id}`,
-        { 
-          headers: authHeader(),
-        }
-      )
-      .then(response => {
-        return response
+    const requestOptions = {
+      method: 'DELETE',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': authHeader()
+      },
+      body: JSON.stringify(data),
+    };
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/delete${id}`, requestOptions)
+      .then(res => {
+        return res.data
       })
       .catch(error => {
         throw error

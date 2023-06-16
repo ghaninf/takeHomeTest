@@ -1,25 +1,22 @@
-import axios from 'axios';
-import authHeader from './auth-header';
-
 class AuthService {
   async login(email, password) {
-    if (!(email && password)) {
-      email = () => 'test@email.com'
-      password = () => 'test@email.com'
-    }
-    return axios
-      .post(`${process.env.REACT_APP_API_URL}/account/login`, {
-        email,
-        password
+    const requestOptions = {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        password: password
       })
-      .then(response => {
-        if (response.data) {
-          this.setToLocalStorage('user', response.data);
+    };
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, requestOptions)
+      .then(async (response) => {
+        const data = await response.json();
+        if (data.token) {
+          this.setToLocalStorage('user', data)
         }
-        return response.data;
       })
       .catch(error => {
-        throw error;
+        throw error
       })
   }
   
