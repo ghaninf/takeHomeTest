@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
+import Image from 'next/image'
 
-import IconArrowLeft from '../../assets/icon-arrow-left-pagination.svg';
-import IconArrowRight from '../../assets/icon-arrow-right-pagination.svg';
+import IconArrowLeft from '../../public/icon-arrow-left-pagination.svg';
+import IconArrowRight from '../../public/icon-arrow-right-pagination.svg';
 
 export default function Pagination({ page, callback }) {
   const [state, setState] = useState({
@@ -50,7 +51,12 @@ export default function Pagination({ page, callback }) {
     <div className="relative w-full h-auto mt-12">
       <div className="relative flex flex-row flex-nowrap gap-x-8 justify-center items-center">
       <span onClick={() => state.hiddenPrev ? null : paginate(page.page - 1)} className={`${state.hiddenPrev ? 'opacity-50' : 'text-zinc-500 cursor-pointer hover:text-zinc-700'}`}>
-        <img src={IconArrowLeft} alt="prev" className="w-[24px] h-[24px]" />
+        <Image
+          alt="prev"
+          src={IconArrowLeft}
+          width={12}
+          height={12}
+        />
       </span>
         {
           state.pagination.map((el, key) => (
@@ -58,7 +64,12 @@ export default function Pagination({ page, callback }) {
           ))
         }
       <span onClick={() => state.hiddenNext ? null : paginate(page.page + 1)} className={`${state.hiddenNext ? 'opacity-50' : 'text-zinc-500 cursor-pointer hover:text-zinc-700'}`}>
-        <img src={IconArrowRight} alt="next" className="w-[24px] h-[24px]" />
+        <Image
+          alt="next"
+          src={IconArrowRight}
+          width={12}
+          height={12}
+        />
       </span>
       </div>
     </div>
