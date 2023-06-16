@@ -50,22 +50,22 @@ const Products = () => {
   useEffect(() => {
     // getData(page.page, page.limit)
     setProducts([
-      { _id: '1', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '2', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '3', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '4', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '5', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '6', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '7', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '8', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '9', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '10', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '11', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '12', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '13', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '14', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '15', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
-      { _id: '16', name: 'product 1', price: 10000, sell: 12000, stock: 10 },
+      { _id: '1', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '2', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '3', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '4', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '5', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '6', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '7', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '8', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '9', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '10', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '11', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '12', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '13', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '14', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '15', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
+      { _id: '16', name: 'product 1', price: 10000, sell: 12000, stock: 10, imageURL: 'https://wingscorp.com/wp-content/uploads/2020/10/sk-softergent-red.png' },
     ])
   }, [page.page])
 
