@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import mongoClient from '@/libs/db';
-import { db } from '@/models/product';
-import Product from '@/models/product';
+import db from '@/libs/db';
 
 export async function GET(request) {
   try {
@@ -14,7 +12,7 @@ export async function GET(request) {
 
     const mongoDB = await mongoClient();
     // const db = mongoDB.db('test')
-    const products = await Product
+    const products = await db.Product
       .find(query)
       .lean()
       .exec();

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Products, db } from '@/libs/db';
+import db from '@/libs/db';
 
 export async function GET(request) {
   try {
@@ -13,8 +13,6 @@ export async function GET(request) {
       .find(query)
       .lean()
       .exec();
-
-    console.log(products)
 
     return NextResponse.json(products)
   } catch (error) {
