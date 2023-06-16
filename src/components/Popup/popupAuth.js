@@ -1,18 +1,19 @@
+"use client"
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
 
 import Button from "../Button/button";
 import Input from "../Input/input";
 
 import { AuthService } from "../../services"
+import { useRouter } from "next/navigation";
 
 PopupAuth.propTypes = {
   close: PropTypes.func.isRequired
 }
 
 export default function PopupAuth(props) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const account = AuthService.getCurrentUser();
   const spec = {
     email: { name: 'email', title: 'Email', placeholder: 'Enter your email', type: 'email' },
@@ -40,7 +41,7 @@ export default function PopupAuth(props) {
   const handleLogin = () => {
     AuthService.login(state.input.email, state.input.password)
       .then(() => {
-        navigate('/');
+        router.push('/manage')
       })
       .catch(error => {
         setState(prev => ({
@@ -51,8 +52,8 @@ export default function PopupAuth(props) {
   }
 
   const handleLogout = () => {
-    AuthService.logout()
-    navigate('/')
+    AuthService.logout();
+    router.push('/')
   }
 
   return(

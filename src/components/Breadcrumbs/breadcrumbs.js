@@ -1,14 +1,11 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom"
-import { UserContext } from "../../layout";
+import { useRouter } from "next/navigation";
 
 export default function Breadcrumbs({ title }) {
-  const navigate = useNavigate();
-  const { pageURL } = useContext(UserContext)
-  
+  const router = useRouter();
+  const link = window.location.pathname.split('/')[1]
   return(
     <div className="flex flex-row flex-nowrap gap-x-4 text-zinc-500">
-      <h3 onClick={() => navigate(`/${pageURL[1]}`)} className="capitalize cursor-pointer hover:text-zinc-800">{pageURL[1]}</h3>
+      <h3 onClick={() => router.push(`/${link}`)} className="capitalize cursor-pointer hover:text-zinc-800">{link}</h3>
       <h3 >{' > '}</h3>
       <h3 >{ title }</h3>
     </div>

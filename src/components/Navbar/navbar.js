@@ -1,12 +1,19 @@
-import { useState } from "react";
+"use client"
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
 import Button from "../Button/button";
 import PopupAuth from "../Popup/popupAuth";
-import { useNavigate } from "react-router-dom";
+import { AuthService } from "@/services";
 
 
-export default function Navbar(props) {
-  const navigate = useNavigate();
+export default function Navbar() {
   const [popup, setPopup] = useState(null)
+  const [state, setState] = useState({
+    page: '',
+    user: undefined
+  })
   
   const closePopup = () => {
     setPopup(null);
@@ -21,13 +28,30 @@ export default function Navbar(props) {
     manage : { title: 'Manage', page: 'manage', link: '/manage' },
   }
 
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+    const page = window.location.pathname.split('/')[1]
+    setState({
+      page: page,
+      user: user
+    })
+  }, [])
+
   return(
     <nav className="fixed top-0 left-0 right-0 w-full bg-white py-3 px-28 flex flex-row flex-nowrap justify-between border-b drop-shadow z-50">
       <ul className="w-3/4 flex flex-row flex-nowrap gap-8 items-center text-zinc-500 [&>*]: ">
-        <li onClick={() => navigate(menu.products.link)} className={`border-b cursor-pointer ${menu.products.page === props.page ? 'text-zinc-800 border-green-500' : 'border-transparent'} hover:text-zinc-800 hover:border-green-500`}>{menu.products.title}</li>
+        <li className={`border-b cursor-pointer ${menu.products.page === state?.page ? 'text-zinc-800 border-green-500' : 'border-transparent'} hover:text-zinc-800 hover:border-green-500`}>
+          <Link href={menu.products.link} >
+            {menu.products.title}
+          </Link>
+        </li>
         {
-          props?.user && 
-          <li onClick={() => navigate(menu.manage.link)} className={`border-b cursor-pointer ${menu.manage.page === props.page ? 'text-zinc-800 border-green-500' : 'border-transparent'} hover:text-zinc-800 hover:border-green-500`}>{menu.manage.title}</li>
+          state?.user && 
+          <li className={`border-b cursor-pointer ${menu.manage.page === state?.page ? 'text-zinc-800 border-green-500' : 'border-transparent'} hover:text-zinc-800 hover:border-green-500`}>
+            <Link href={menu.manage.link} >
+              {menu.manage.title}
+            </Link>
+          </li>
         }
       </ul>
       <Button
